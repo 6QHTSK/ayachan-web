@@ -17,7 +17,7 @@
         <q-dialog v-model="uploadMusicDialog">
           <q-uploader
             style="max-width: 400px"
-            url="/api/sonolus/upload/song"
+            url="https://test.api.ayachan.fun/v2/sonolus/upload/song"
             label="仅限10M以内 MP3格式"
             auto-upload
             max-file-size="10485760"
@@ -63,7 +63,7 @@ export default {
         } catch (err) {
           this.$q.notify('谱面错误')
         }
-        this.$axios.post('/api/sonolus/upload/script',
+        this.$axios.post('https://test.api.ayachan.fun/v2/sonolus/upload/script',
           {
             bgm: this.musicURL,
             title: this.title,

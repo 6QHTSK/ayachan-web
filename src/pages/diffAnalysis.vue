@@ -181,7 +181,7 @@ export default {
       vm.onLoading = true
       let url
       if (flag) {
-        url = '/api/map-info/bestdori/' + this.bestdoriID
+        url = 'https://test.api.ayachan.fun/v2/map-info/bestdori/' + this.bestdoriID
         if (this.bestdoriID < 900) {
           url = url + '?diff=' + this.diffID
         }
@@ -198,7 +198,7 @@ export default {
           vm.onLoading = false
         })
       } else {
-        url = '/api/map-info/'
+        url = 'https://test.api.ayachan.fun/v2/map-info/'
         let chart
         try {
           chart = JSON.parse(this.inputStr)

@@ -3,7 +3,7 @@ import {Notify} from "quasar";
 
 export async function fetchFromServerMyChart(query,page,limit){
   let myJson = []
-  await api.get('/assets/songList.json',).then((response)=>{
+  await api.get('/songList.json',).then((response)=>{
     myJson = response.data
   }).catch((error)=>{
     Notify.create({message:error.message,color:'negative'})
@@ -27,7 +27,7 @@ function transformModel(docs){
       artists : doc.artist,
       level : doc.diff,
       author : doc.charter,
-      cover : "/assets/pic/"+doc.id+".jpg/webp",
+      cover : "https://assets.ayachan.fun/pic/"+doc.id+".jpg/webp",
       sp_rhythm : doc.sp_rhythm === true
     }
     transformDocs.push(newDoc)
