@@ -1,6 +1,6 @@
 # ayachan-web (ayachan-web)
 
-Web Frontend of ayachan
+Ayachan 网页前端
 
 ## Install the dependencies
 
