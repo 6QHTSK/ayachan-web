@@ -156,7 +156,7 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `ayachan-web`,
+        name: `彩绫的工具站`,
         short_name: `ayachan-web`,
         description: `Web Frontend of ayachan`,
         display: "standalone",
