@@ -31,7 +31,7 @@ export default {
       this.onLoading = true
       const diffConvert = { easy: 0, normal: 1, hard: 2, expert: 3, special: 4 }
       const vm = this
-      const url = 'https://test.api.ayachan.fun/v2/map-data/bestdori/' + this.bestdoriId + '?map-format-out=BestdoriV2&diff=' + diffConvert[this.diff]
+      const url = 'https://api.ayachan.fun/v2/map-data/bestdori/' + this.bestdoriId + '?map-format-out=BestdoriV2&diff=' + diffConvert[this.diff]
       this.$axios.get(url).then(function (res) {
         vm.onloading = false
         if (res.status === 200) {

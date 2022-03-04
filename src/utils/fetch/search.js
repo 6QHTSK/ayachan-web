@@ -12,7 +12,7 @@ export async function fetchFromServerBestdori (query, page, limit){
   let docs = []
   let totalCount = 0
   let err = null
-  await api.get('https://test.api.ayachan.fun/v2/bestdori/list',{params: {query:query,page:page-1,limit:limit}}).then((response)=>{
+  await api.get('https://api.ayachan.fun/v2/bestdori/list',{params: {query:query,page:page-1,limit:limit}}).then((response)=>{
     docs = response.data.docs
     totalCount = response.data.totalCount
   }).catch((error)=>{

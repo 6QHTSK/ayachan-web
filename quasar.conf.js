@@ -77,7 +77,7 @@ module.exports = configure(function (ctx) {
       },
       proxy: {
         '/api' : {
-          target : 'http://test.api.ayachan.fun/v2/',
+          target : 'http://api.ayachan.fun/v2/',
           pathRewrite:{
             '^/api': ''
           },
