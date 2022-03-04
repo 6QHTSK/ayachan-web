@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:match",
+      "destination": "https://test.api.ayachan.fun/v2/:match"
+    },
+    {
+      "source": "/assets/:match",
+      "destination": "https://assets.ayachan.fun/:match"
+    }
+  ]
+}
