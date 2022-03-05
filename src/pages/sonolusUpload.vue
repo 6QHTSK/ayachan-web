@@ -2,8 +2,7 @@
 <template>
   <q-page padding class="flex column content-center items-center content-start q-gutter-xs">
       <q-banner inline-actions class="text-black bg-warning page-item" style="text-align: center">
-        测试中，可能不稳定，请合理使用，上传谱面资源仅保留6个小时<br/>
-        ---版本更新中，暂时无法使用---
+        测试中，可能不稳定，请合理使用，上传谱面资源仅保留6个小时
       </q-banner>
       <q-banner inline-actions class="text-white bg-primary page-item" style="text-align: center">
         服务器地址： test.sonolus.ayachan.fun/bestdori <q-btn dense flat label="点此复制" @click="copy2clipboard"></q-btn>
