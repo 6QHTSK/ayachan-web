@@ -2,7 +2,7 @@
   <q-page class="flex column content-center q-pa-xl">
     <div class="flex column items-center">
       <p class="text-h3">彩绫的工具站</p>
-      <p>V0.6.0</p>
+      <p>V0.6.1</p>
     </div>
     <q-separator spaced class="flex-break"/>
     <div class="row q-col-gutter-xl justify-around">
@@ -17,7 +17,7 @@
     </div>
     <q-separator spaced class="flex-break" style="text-align: center"/>
     <div class="flex column items-center">
-      <span>公告：由于各种原因，网站将进入不活跃的更新阶段。</span>
+      <span>公告：新API正在开发中，网站也计划翻新，Bestdori 搜索目前暂时无法使用，请等待重构</span>
 <!--      <span>服务器API版本：V2.1.0</span>-->
     </div>
     <q-footer bordered reveal class="bg-white">
@@ -28,7 +28,7 @@
             <img src="~assets/备案图标.png" style="float:left;"/>
             <span style="float:left;height:20px;line-height:20px;margin: 0 0 0 5px; color:#939393;">桂公网安备 45030502000326号</span>
           </a>
-          <a target="_blank" href="http://www.beian.miit.gov.cn"
+          <a target="_blank" href="http://beian.miit.gov.cn"
              style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
               <span
                 style="float:left;height:20px;line-height:20px;margin: 0 0 0 5px; color:#939393;">桂ICP备20005849-1号</span>

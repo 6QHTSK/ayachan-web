@@ -70,12 +70,12 @@ export default {
           separator: false,
           to: '#/map-analyze'
         },
-        {
-          icon: 'search',
-          label: '谱面搜索',
-          separator: false,
-          to: '#/search'
-        },
+        // {
+        //   icon: 'search',
+        //   label: '谱面搜索',
+        //   separator: false,
+        //   to: '#/search'
+        // },
         {
           icon: 'cloud_upload',
           label: 'Sonolus谱面测试',
