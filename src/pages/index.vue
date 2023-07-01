@@ -2,7 +2,7 @@
   <q-page class="flex column content-center q-pa-xl">
     <div class="flex column items-center">
       <p class="text-h3">彩绫的工具站</p>
-      <p>V0.6.1</p>
+      <p>V0.6.2</p>
     </div>
     <q-separator spaced class="flex-break"/>
     <div class="row q-col-gutter-xl justify-around">
