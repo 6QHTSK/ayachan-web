@@ -105,7 +105,14 @@ export default {
       this.loading = true
       let formData = new FormData(evt.target)
       let vm = this
-      this.$axios.post('https://sonolus.ayachan.fun/test/sonolus/levels',formData, {headers: {'Content-Type': `multipart/form-data`}}).then(function (response){
+      this.$axios.post('https://sonolus.ayachan.fun/test/sonolus/levels', formData,
+          {
+              headers: {'Content-Type': `multipart/form-data`},
+              validateStatus: function (status){
+                return status === 200 || status === 400 || status === 404 || status === 500
+              }
+          }
+        ).then(function (response){
         if(response.status === 200){ //上传成功
           vm.uploaded = true
           vm.uploadLabel = '上传完成，测试谱面ID:' + response.data.uid
@@ -116,14 +123,16 @@ export default {
           })
         }else {
           vm.$q.notify({
-            message: '上传失败，错误（' + response.data.code + '）' + response.data.description + '：' + response.data.detail,
-            type: 'warning'
+              message: '上传失败，' + response.data.description + '（' + response.data.code + '）',
+              caption:  response.data.detail,
+              type: 'warning'
           })
           vm.loading = false
         }
       }).catch(function (error){
         vm.$q.notify({
-            message: '上传失败，错误' + error,
+            message: '上传失败，未知错误',
+            caption: error,
             type: 'Warning'
           })
         vm.loading = false
