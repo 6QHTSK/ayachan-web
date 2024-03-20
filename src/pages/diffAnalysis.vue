@@ -2,39 +2,48 @@
   <q-page padding class="flex column content-center items-center content-start q-gutter-xs">
     <!--顶端选择-->
     <div class="row q-gutter-sm justify-start page-item">
-      <q-radio v-model="useBestdori" dense :val="true" label="Bestdori" @input="clearInput"/>
-      <q-radio v-model="useBestdori" dense :val="false" label="自定义" @input="clearInput"/>
+      <q-radio v-model="chartServer" dense val="bestdori" label="Bestdori" @input="clearInput"/>
+      <q-radio v-model="chartServer" dense val="bandori" label="Bandori" @input="clearInput"/>
+      <q-radio v-model="chartServer" dense val="custom" label="自定义" @input="clearInput"/>
       <q-space/>
-      <q-btn :color="returnColor(diffID)" @click="clickOnButton()" :label="diffStr[diffID]" v-show="!useBestdori"
+      <q-btn :color="returnColor(diffID)" @click="clickOnButton()" :label="diffStr[diffID]" v-show="!chartServer"
              style="width:80px"/>
     </div>
-    <!--Bestdori谱面-->
-    <q-input v-model="bestdoriID" type="number" class="page-item" label="Bestdori谱面id"
-             @keyup.enter="getBestdoriChart" v-if="useBestdori">
-      <template v-slot:prepend v-if="useBestdori">
+    <!--Bandori谱面 -->
+    <q-input v-model="bestdoriID" type="number" class="page-item" label="谱面id"
+             @keyup.enter="remoteChartAnalysis" v-if="chartServer === 'bandori'">
+      <template v-slot:prepend v-if="chartServer">
         <q-btn :color="returnColor(diffID)" @click="clickOnButton()" :label="diffStr[diffID]" style="width:80px">
+        </q-btn>
+      </template>
+    </q-input>
+    <!--Bestdori谱面-->
+    <q-input v-model="bestdoriID" type="number" class="page-item" label="谱面id"
+             @keyup.enter="remoteChartAnalysis" v-if="chartServer ==='bestdori'">
+      <template v-slot:prepend v-if="chartServer">
+        <q-btn color="grey" :disable="true" label="Default" style="width:80px">
         </q-btn>
       </template>
     </q-input>
     <!--自定义谱面-->
     <q-input type="textarea" class="page-item" v-model.lazy="inputStr" label="bestdori谱面"
-             :readonly="onLoading || showDetail" outlined v-if="!useBestdori">
+             :readonly="onLoading || showDetail" outlined v-if="chartServer === 'custom'" style="padding-top: 10px">
     </q-input>
-    <!--计算按钮[自定义谱面]-->
-    <q-btn color="primary" @click="analysis(false)" class="page-item" :readonly="onLoading || showDetail"
-           :loading="onLoading" v-show="!useBestdori && !showDetail">分析
-      <template v-slot:loading>
-        <q-spinner-gears class="on-left"/>
-        <span>计算中...</span>
-      </template>
-    </q-btn>
-    <!--计算按钮[Bestdori谱面]-->
-    <q-btn color="primary" @click="getBestdoriChart" :loading="onLoading" class="page-item"
-           v-show="useBestdori && !showDetail">
+    <!--计算按钮[Bandori/Bestdori谱面]-->
+    <q-btn color="primary" @click="remoteChartAnalysis" :loading="onLoading" class="page-item"
+           v-show="Array('bestdori', 'bandori').indexOf(chartServer) !== -1 && !showDetail">
       获取
       <template v-slot:loading>
         <q-spinner-gears class="on-left"/>
         <span v-show="onLoading">计算中...</span>
+      </template>
+    </q-btn>
+    <!--计算按钮[自定义谱面]-->
+    <q-btn color="primary" @click="analysis" class="page-item" :readonly="onLoading || showDetail"
+           :loading="onLoading" v-show="chartServer === 'custom' && !showDetail">分析
+      <template v-slot:loading>
+        <q-spinner-gears class="on-left"/>
+        <span>计算中...</span>
       </template>
     </q-btn>
     <q-btn color="pink-4" @click="clearInput" class="page-item" v-show="showDetail">重置</q-btn>
@@ -78,13 +87,13 @@
 export default {
   data: function () {
     return {
-      diffStr: ['Easy', 'Normal', 'Hard', 'Expert', 'Special'],
+      diffStr: ['easy', 'normal', 'hard', 'expert', 'special'],
       diffID: 3, // 难度等级 EASY~EXPERT 0~3
       inputStr: '', // 从大输入框输入的谱面
       bestdoriID: 128, // 需要获取的bestdori的id
       showDetail: false, // 是否打开谱面分析栏
       onLoading: false, // 是否在拉取数据
-      useBestdori: true,
+      chartServer: "bestdori",
       itemSubject: ['basic', 'detail'],
       itemLabel: ['基础信息', '详细信息(Beta：数据可能不准确)'],
       itemList: {
@@ -94,7 +103,7 @@ export default {
     }
   },
   methods: {
-    analysis(flag) {
+    analysis() {
       const vm = this;
 
       function generateRelativeStr(relative){
@@ -137,12 +146,13 @@ export default {
       }
 
       function procession(res) {
-        if (res.data.result) {
-          const rtr = res.data;
-          const basic = rtr.map_metrics;
-          const basicDiff = rtr.map_difficulty;
-          const totalTimeMin = Math.floor(rtr.map_metrics.total_time / 60)
-          const totalTimeSec = (rtr.map_metrics.total_time - totalTimeMin * 60).toFixed(1)
+        if (res.status === 200) {
+          const response = res.data;
+          console.log(response)
+          const basic = response.metrics;
+          const basicDiff = response.difficulty;
+          const totalTimeMin = Math.floor(basic.total_time / 60)
+          const totalTimeSec = (basic.total_time - totalTimeMin * 60).toFixed(1)
           vm.itemList.basic = [ // 标题，数值前缀，数值，数值后缀，难度前缀，难度，难度后缀
             ['谱面时间', '', generateTimeStr(totalTimeMin, totalTimeSec), '', '', '', ''],
             ['总物量', '', basic.total_note, '', '', '', ''],
@@ -154,8 +164,8 @@ export default {
             ['BPM', '', generateBPMStr(basic.bpm_low, basic.bpm_high, basic.main_bpm), '', '', '', '']
           ]
           if(basic.irregular === 1){
-            const detail = rtr.map_metrics_extend
-            const detailDiff = rtr.map_difficulty_extend
+            const detail = response.metrics_extend
+            const detailDiff = response.difficulty_extend
             vm.itemList.detail = [
               ['左手击打音符占比', '', fix(detail.left_percent * 100, 1), '%', '', '', ''],
               ['最大单手每秒击打', '', fix(detail.finger_max_hps, 2), '次/s', '', generateRelativeStr(detailDiff.finger_max_hps), ''],
@@ -178,27 +188,32 @@ export default {
         }
       }
 
-      vm.onLoading = true
-      let url
-      if (flag) {
-        url = 'https://api.ayachan.fun/v2/map-info/bestdori/' + this.bestdoriID
-        if (this.bestdoriID < 900) {
-          url = url + '?diff=' + this.diffID
-        }
-        this.$axios.get(url).then(res => {
-          procession(res)
-        }).catch((error) => {
-          console.log(error.response)
+      function apiErrorHandler(error){
+        vm.onLoading = false
+        if(error.response == null || error.response.data == null){
+          vm.$q.notify({message: error.message, type: 'negative'})
+        }else{
           const res = error.response.data
-          if('result' in res){
-            vm.$q.notify({message: res.message, type: 'Error'})
+          if('error' in res){
+            vm.$q.notify({message: res.error, type: 'negative'})
           }else{
-            vm.$q.notify({message: '服务器错误或无法连接服务器', type: 'Error'})
+            vm.$q.notify({message: '服务器错误或无法连接服务器', type: 'negative'})
           }
-          vm.onLoading = false
-        })
-      } else {
-        url = 'https://api.ayachan.fun/v2/map-info/'
+        }
+      }
+
+      vm.onLoading = true
+      let metricsBaseUrl = 'https://api.ayachan.fun/v2/chart/metrics/'
+      // let metricsBaseUrl = 'http://127.0.0.1:8081/v2/chart/metrics/' // for dev
+      let url
+      if (this.chartServer === 'bestdori') {
+        url = metricsBaseUrl + 'bestdori/' + this.bestdoriID
+        this.$axios.get(url).then(procession).catch(apiErrorHandler)
+      } else if (this.chartServer === 'bandori') {
+        url = metricsBaseUrl + 'bandori/' + this.bestdoriID + '/' + this.diffStr[this.diffID]
+        this.$axios.get(url).then(procession).catch(apiErrorHandler)
+      } else if(this.chartServer === 'custom') {
+        url = metricsBaseUrl + 'custom/' + this.diffStr[this.diffID]
         let chart
         try {
           chart = JSON.parse(this.inputStr)
@@ -210,26 +225,14 @@ export default {
           vm.onLoading = false
           return false
         }
-        const data = {
-          options: {
-            diff: this.diffID.toString(),
-          },
-          map: chart,
-          map_format_in: "BestdoriV2"
-        }
-        this.$axios.post(url, data).then(res => {
-          procession(res)
-        }).catch(function (error) {
-          vm.$q.notify({message: '服务器错误或无法连接服务器', type: 'Error'})
-          vm.onLoading = false
-        })
+        this.$axios.post(url, chart).then(procession).catch(apiErrorHandler)
       }
       return true
     },
-    getBestdoriChart() {
+    remoteChartAnalysis() {
       this.clearInput()
       this.$forceUpdate()
-      this.analysis(true)
+      this.analysis()
     },
     clearInput() {
       this.inputStr = ''
