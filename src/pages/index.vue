@@ -23,12 +23,12 @@
     <q-footer bordered reveal class="bg-white">
       <q-toolbar>
         <div style="margin:0 auto;">
-          <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=45030502000326"
+          <a target="_blank" href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=45030502000326"
              style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
             <img src="~assets/备案图标.png" style="float:left;"/>
             <span style="float:left;height:20px;line-height:20px;margin: 0 0 0 5px; color:#939393;">桂公网安备 45030502000326号</span>
           </a>
-          <a target="_blank" href="http://beian.miit.gov.cn"
+          <a target="_blank" href="https://beian.miit.gov.cn/"
              style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
               <span
                 style="float:left;height:20px;line-height:20px;margin: 0 0 0 5px; color:#939393;">桂ICP备20005849-1号</span>
