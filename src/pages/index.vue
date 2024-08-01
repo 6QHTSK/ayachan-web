@@ -31,7 +31,7 @@
           <a target="_blank" href="https://beian.miit.gov.cn/"
              style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
               <span
-                style="float:left;height:20px;line-height:20px;margin: 0 0 0 5px; color:#939393;">桂ICP备20005849-1号</span>
+                style="float:left;height:20px;line-height:20px;margin: 0 0 0 5px; color:#939393;">桂ICP备20005849号-1</span>
           </a>
         </div>
       </q-toolbar>
